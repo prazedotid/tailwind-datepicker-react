@@ -53,7 +53,7 @@ const DatePickerProvider = ({ children, options: customOptions, onChange, show, 
 	const selectedMonth = selectedDate.getMonth()
 	const selectedYear = selectedDate.getFullYear()
 
-	const changeSelectedDate = (action: "prev" | "next" | "date" | "today", date: Date) => {
+	const changeSelectedDate = (action: "prev" | "next" | "date" | "today" | "clear", date: Date) => {
 		if (options?.maxDate && date > options.maxDate) return
 		if (options?.minDate && date < options.minDate) return
 		if (options?.disabledDates && options.disabledDates.indexOf(date) >= 0) return
