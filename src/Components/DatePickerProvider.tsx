@@ -10,7 +10,7 @@ interface IDatePickerContext {
 	show: boolean
 	setShow: (show: boolean) => void
 	selectedDate: Date
-	changeSelectedDate: (action: "prev" | "next" | "date" | "today", date: Date) => void
+	changeSelectedDate: (action: "prev" | "next" | "date" | "today" | "clear", date: Date | null) => void
 	showSelectedDate: boolean
 	setShowSelectedDate: Dispatch<SetStateAction<boolean>>
 	selectedMonth: number
@@ -53,7 +53,12 @@ const DatePickerProvider = ({ children, options: customOptions, onChange, show, 
 	const selectedMonth = selectedDate.getMonth()
 	const selectedYear = selectedDate.getFullYear()
 
-	const changeSelectedDate = (action: "prev" | "next" | "date" | "today" | "clear", date: Date) => {
+	const changeSelectedDate = (action: "prev" | "next" | "date" | "today" | "clear", date: Date | null) => {
+		if (date === null) {
+			setShowSelectedDate(false)
+			return
+		}
+
 		if (options?.maxDate && date > options.maxDate) return
 		if (options?.minDate && date < options.minDate) return
 		if (options?.disabledDates && options.disabledDates.indexOf(date) >= 0) return
@@ -63,7 +68,7 @@ const DatePickerProvider = ({ children, options: customOptions, onChange, show, 
 		if (onChange) onChange(date)
 	}
 
-	const getFormattedDate = (date: Date | number, formatOptions?: Intl.DateTimeFormatOptions | undefined | null) => formatDate(options?.language ? options?.language : "en", date, formatOptions)
+	const getFormattedDate = (date: Date | number, formatOptions?: Intl.DateTimeFormatOptions | undefined | null) => formatDate(options?.language ?? "en", date, formatOptions)
 
 	return (
 		<DatePickerContext.Provider
