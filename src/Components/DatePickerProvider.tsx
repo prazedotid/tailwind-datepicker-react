@@ -38,7 +38,7 @@ export const DatePickerContext = createContext<IDatePickerContext>({
 interface IDatePickerProviderProps {
 	children: ReactElement
 	options?: IOptions
-	onChange?: (date: Date) => void
+	onChange?: (date: Date | null) => void
 	show: boolean
 	setShow: (show: boolean) => void
 	selectedDateState?: [Date, (date: Date) => void]
@@ -55,6 +55,7 @@ const DatePickerProvider = ({ children, options: customOptions, onChange, show, 
 
 	const changeSelectedDate = (action: "prev" | "next" | "date" | "today" | "clear", date: Date | null) => {
 		if (date === null) {
+			if (onChange) onChange(null)
 			setShowSelectedDate(false)
 			return
 		}
